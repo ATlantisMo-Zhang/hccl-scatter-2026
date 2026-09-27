@@ -241,6 +241,12 @@ HcclResult CreateResources(HcclComm comm, const OpParam &param, AlgResourceCtx &
             }
         }
     }
+    if (resources.relayTopology != 0) {
+        CHK_RET(HcclGetHcclBuffer(comm, &resources.relayScratch, &resources.relayScratchBytes));
+        if (resources.relayScratch == nullptr || resources.relayScratchBytes < sizeof(float)) {
+            return HCCL_E_PARA;
+        }
+    }
     CcuInsHandle instance = 0;
     uint32_t count = 0;
     CHK_RET(HcclCommQueryCcuIns(comm, &instance, &count));
@@ -351,7 +357,7 @@ HcclResult HcclScatter(void *sendBuf, void *recvBuf, uint64_t recvCount, HcclDat
     CHK_PTR_NULL(comm);
     CHK_PTR_NULL(stream);
     OpParam param{};
-    std::snprintf(param.tag, sizeof(param.tag), "%s", "hccl_scatter_ccu");
+    std::snprintf(param.tag, sizeof(param.tag), "%s", "hccl_scatter_postrace_scratch_v1");
     param.inputPtr = sendBuf;
     param.outputPtr = recvBuf;
     param.count = recvCount;

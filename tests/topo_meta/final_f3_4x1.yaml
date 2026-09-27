@@ -1,0 +1,18 @@
+# Normal mother model has two pods, each containing server index 0 and 1.
+meta:
+  podNum: 2
+  serNum: 4
+  rankNum: 4
+topology:
+  - podId: 0
+    servers:
+      - serId: 0
+        ranks: [0]
+      - serId: 1
+        ranks: [0]
+  - podId: 1
+    servers:
+      - serId: 0
+        ranks: [0]
+      - serId: 1
+        ranks: [0]

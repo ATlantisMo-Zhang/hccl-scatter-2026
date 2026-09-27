@@ -9,6 +9,7 @@
  */
 
 #include <algorithm>
+#include <array>
 #include <ccu/ccu_res.h>
 #include <ccu/ccu_launch.h>
 
@@ -22,7 +23,7 @@ constexpr uint64_t NO_PEER = UINT64_MAX;
 enum RelayPhase : uint64_t { ROOT_MESH = 1, ROOT_CLOS, MESH_RECEIVE, HELPER_SEND, HELPER_FINISH, REMOTE_RECEIVE };
 
 HcclResult RelaySlice(const OpParam &param, const AlgResourceCtx &resources, uint64_t bytes,
-    uint64_t offset, uint64_t len, uint64_t relayBytes, uint64_t inputToken, uint64_t outputToken)
+    uint64_t offset, uint64_t len, uint64_t relayBytes, uint64_t inputToken, uint64_t outputToken, uint64_t scratchToken)
 {
     const bool isRoot = param.myRank == param.root;
     const bool localRoot = (resources.localMask & (1u << param.root)) != 0;
@@ -58,7 +59,8 @@ HcclResult RelaySlice(const OpParam &param, const AlgResourceCtx &resources, uin
         if (group.relayKernel == 0) { return HCCL_E_PARA; }
         const uint64_t args[] = {inputToken, output, outputToken, len, param.root, self,
             (isRoot && self != output) ? 1ULL : 0ULL, isRoot ? input + offset : 0,
-            bytes, relayBytes, len - relayBytes, phase, target};
+            bytes, relayBytes, len - relayBytes, phase, target,
+            reinterpret_cast<uintptr_t>(resources.relayScratch), scratchToken};
         return FromCcu(HcommCcuKernelLaunch(thread, group.relayKernel, args, sizeof(args) / sizeof(args[0])));
     };
     HCCL_INFO("[Scatter] rank[%u] root[%u] topology[%u] offset[%llu] len[%llu] R[%llu] helperTarget[%llu]",
@@ -120,12 +122,29 @@ HcclResult ExecOp(const OpParam &param)
         CHK_RET(FromCcu(HcommCcuGetMemToken(input, bytes * param.rankSize, &inputToken)));
     }
     CHK_RET(FromCcu(HcommCcuGetMemToken(output, bytes, &outputToken)));
+    uint64_t scratchToken = 0;
+    uint64_t chunkLimit = MAX_DATA_SIZE;
+    if (resources.relayTopology != 0 && bytes >= RELAY_MIN_BYTES) {
+        // HCCL_BUFFSIZE is a communicator-wide setting. Each slice must fit its
+        // relay tail in the independent HCCL buffer, including small buffers.
+        const uint64_t capacity = std::min<uint64_t>(resources.relayScratchBytes, MAX_DATA_SIZE);
+        chunkLimit = std::min<uint64_t>(MAX_DATA_SIZE, resources.relayTopology == 2
+            ? capacity / 4 * 11 : capacity / 5 * 6);
+        chunkLimit = chunkLimit / sizeof(float) * sizeof(float);
+        if (chunkLimit == 0) { return HCCL_E_PARA; }
+        CHK_RET(FromCcu(HcommCcuGetMemToken(reinterpret_cast<uintptr_t>(resources.relayScratch),
+            capacity, &scratchToken)));
+    }
+    // Balance chunks in whole FP32 elements; avoid a full-size slice followed
+    // by a tiny tail paying the same mission and notification overhead.
+    const uint64_t chunks = (bytes - 1) / chunkLimit + 1;
+    chunkLimit = ((param.count - 1) / chunks + 1) * sizeof(float);
     for (uint64_t offset = 0; offset < bytes;) {
-        const uint64_t len = std::min<uint64_t>(bytes - offset, MAX_DATA_SIZE);
-        const uint64_t relayBytes = resources.relayTopology == 2 ? 4 * (len / 10)
-            : resources.relayTopology == 4 ? ((len * 3 / 4) / 4) * 4 : 0;
+        const uint64_t len = std::min<uint64_t>(bytes - offset, chunkLimit);
+        const uint64_t relayBytes = resources.relayTopology == 2 ? (len / sizeof(float) * 4 / 11) * sizeof(float)
+            : resources.relayTopology == 4 ? (len / sizeof(float) * 5 / 6) * sizeof(float) : 0;
         if (resources.relayTopology != 0 && bytes >= RELAY_MIN_BYTES && relayBytes != 0) {
-            CHK_RET(RelaySlice(param, resources, bytes, offset, len, relayBytes, inputToken, outputToken));
+            CHK_RET(RelaySlice(param, resources, bytes, offset, len, relayBytes, inputToken, outputToken, scratchToken));
             offset += len;
             continue;
         }
@@ -137,26 +156,29 @@ HcclResult ExecOp(const OpParam &param)
             if (!isRoot && g != activeGroup) { continue; }
             const auto &group = resources.groups[g];
             const uint64_t self = param.myRank == param.root ? input + param.myRank * bytes + offset : 0;
-            std::vector<uint64_t> args = {inputToken, output + offset, outputToken, len, param.root,
+            std::array<uint64_t, MAX_RANK_SIZE + 8> args = {inputToken, output + offset, outputToken, len, param.root,
                 self, (param.myRank == param.root && self != output + offset) ? 1ULL : 0ULL};
+            uint32_t argCount = 7;
             if (group.registration.channelCount >= 7) {
-                args.push_back(param.myRank == param.root
-                    ? input + group.registration.peers[0] * bytes + offset : 0);
-                args.push_back(bytes);
+                args[argCount++] = param.myRank == param.root
+                    ? input + group.registration.peers[0] * bytes + offset : 0;
+                args[argCount++] = bytes;
             } else {
                 for (uint32_t i = 0; i < group.registration.channelCount; ++i) {
-                    args.push_back(param.myRank == param.root
-                        ? input + group.registration.peers[i] * bytes + offset : 0);
+                    args[argCount++] = param.myRank == param.root
+                        ? input + group.registration.peers[i] * bytes + offset : 0;
                 }
-            }
-            if (resources.relayTopology == 2) {
-                args.push_back(bytes < RELAY_MIN_BYTES ? 1ULL : 0ULL);
             }
             const ThreadHandle thread = parallel && g == 1 ? resources.slaveThread : param.cpuThread;
             const bool smallPull = resources.relayTopology == 0 && bytes < RELAY_MIN_BYTES
                 && group.registration.channelCount != 0;
             const CcuKernelHandle kernel = smallPull ? group.smallPullKernel : group.kernel;
-            CHK_RET(FromCcu(HcommCcuKernelLaunch(thread, kernel, args.data(), args.size())));
+            // The dedicated small kernel has no mode argument; SDK launch
+            // validation requires an exact match with its LoadArg count.
+            if (!smallPull) {
+                args[argCount++] = bytes < RELAY_MIN_BYTES ? 1ULL : 0ULL;
+            }
+            CHK_RET(FromCcu(HcommCcuKernelLaunch(thread, kernel, args.data(), argCount)));
         }
         if (parallel) {
             CHK_RET(static_cast<HcclResult>(HcommThreadNotifyRecordOnThread(resources.slaveThread, param.cpuThread, 0)));

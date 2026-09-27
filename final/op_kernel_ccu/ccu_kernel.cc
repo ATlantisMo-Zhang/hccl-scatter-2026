@@ -134,6 +134,8 @@ CcuResult CcuKernel(CcuKernelArg arg)
         CCU_CHECK(ccu::LoadArg(compactArgs[0], 7));
         CCU_CHECK(ccu::LoadArg(compactArgs[1], 8));
     }
+    ccu::Variable small;
+    CCU_CHECK(ccu::LoadArg(small, compact ? 9 : 7 + reg->channelCount));
     std::vector<ccu::Variable> peerOutput;
     std::vector<ccu::Variable> peerToken;
     for (uint32_t i = 0; i < reg->channelCount; ++i) {
@@ -145,20 +147,19 @@ CcuResult CcuKernel(CcuKernelArg arg)
     ccu::Event copied;
     CCU_IF(root == reg->myRank)
     {
-        for (uint32_t i = 0; i < reg->channelCount; ++i) {
-            CCU_CHECK(ccu::NotifyWait(reg->channels[i], 0, READY));
-        }
         if (compact) {
             uint32_t previousPeer = reg->peers[0];
             for (uint32_t i = 0; i < reg->channelCount; ++i) {
                 if (i == 0) { source[i] = compactArgs[0]; }
                 else { source[i] = source[i - 1]; }
                 for (uint32_t peer = previousPeer; peer < reg->peers[i]; ++peer) {
+                    source[i] += compactArgs[1];
                 }
                 previousPeer = reg->peers[i];
             }
         }
         for (uint32_t i = 0; i < reg->channelCount; ++i) {
+            CCU_CHECK(ccu::NotifyWait(reg->channels[i], 0, READY));
             ccu::LocalAddr src;
             ccu::RemoteAddr dst;
             src.addr = source[i];
@@ -177,17 +178,23 @@ CcuResult CcuKernel(CcuKernelArg arg)
                 dst.addr = output;
                 dst.token = outputToken;
                 CCU_CHECK(ccu::LocalCopy(dst, src, len, copied, 1));
+            }
+        }
+        for (uint32_t i = 0; i < reg->channelCount; ++i) {
+            CCU_CHECK(ccu::EventWait(sent, 1u << i));
+            CCU_CHECK(ccu::NotifyRecord(reg->channels[i], 0, WRITTEN));
+        }
+        if (reg->copySelf != 0) {
+            CCU_IF(doSelf != 0)
+            {
                 CCU_CHECK(ccu::EventWait(copied, 1));
             }
         }
-        if (reg->channelCount != 0) {
-            CCU_CHECK(ccu::EventWait(sent, (1u << reg->channelCount) - 1u));
-        }
-        for (uint32_t i = 0; i < reg->channelCount; ++i) {
-            CCU_CHECK(ccu::NotifyRecord(reg->channels[i], 0, WRITTEN));
-        }
-        for (uint32_t i = 0; i < reg->channelCount; ++i) {
-            CCU_CHECK(ccu::NotifyWait(reg->channels[i], 0, CONSUMED));
+        CCU_IF(small == 0)
+        {
+            for (uint32_t i = 0; i < reg->channelCount; ++i) {
+                CCU_CHECK(ccu::NotifyWait(reg->channels[i], 0, CONSUMED));
+            }
         }
     }
     for (uint32_t i = 0; i < reg->channelCount; ++i) {
@@ -196,7 +203,10 @@ CcuResult CcuKernel(CcuKernelArg arg)
             CCU_CHECK(ccu::WriteVariableWithNotify(reg->channels[i], output, OUTPUT_XN, 0, 1u << OUTPUT_XN));
             CCU_CHECK(ccu::WriteVariableWithNotify(reg->channels[i], outputToken, TOKEN_XN, 0, 1u << TOKEN_XN));
             CCU_CHECK(ccu::NotifyWait(reg->channels[i], 0, WRITTEN));
-            CCU_CHECK(ccu::NotifyRecord(reg->channels[i], 0, CONSUMED));
+            CCU_IF(small == 0)
+            {
+                CCU_CHECK(ccu::NotifyRecord(reg->channels[i], 0, CONSUMED));
+            }
         }
     }
     return CCU_SUCCESS;
@@ -243,6 +253,7 @@ CcuResult CcuSmallReadyPushKernel(CcuKernelArg arg)
                 if (i == 0) { source[i] = compactArgs[0]; }
                 else { source[i] = source[i - 1]; }
                 for (uint32_t peer = previousPeer; peer < reg->peers[i]; ++peer) {
+                    source[i] += compactArgs[1];
                 }
                 previousPeer = reg->peers[i];
             }
@@ -267,14 +278,17 @@ CcuResult CcuSmallReadyPushKernel(CcuKernelArg arg)
                 dst.addr = output;
                 dst.token = outputToken;
                 CCU_CHECK(ccu::LocalCopy(dst, src, len, copied, 1));
-                CCU_CHECK(ccu::EventWait(copied, 1));
             }
         }
-        if (reg->channelCount != 0) {
-            CCU_CHECK(ccu::EventWait(sent, (1u << reg->channelCount) - 1u));
-        }
         for (uint32_t i = 0; i < reg->channelCount; ++i) {
+            CCU_CHECK(ccu::EventWait(sent, 1u << i));
             CCU_CHECK(ccu::NotifyRecord(reg->channels[i], 0, WRITTEN));
+        }
+        if (reg->copySelf != 0) {
+            CCU_IF(doSelf != 0)
+            {
+                CCU_CHECK(ccu::EventWait(copied, 1));
+            }
         }
     }
     for (uint32_t i = 0; i < reg->channelCount; ++i) {
@@ -337,6 +351,7 @@ CcuResult CcuDualModeKernel(CcuKernelArg arg)
                     if (i == 0) { source[i] = compactArgs[0]; }
                     else { source[i] = source[i - 1]; }
                     for (uint32_t peer = previousPeer; peer < reg->peers[i]; ++peer) {
+                        source[i] += compactArgs[1];
                     }
                     previousPeer = reg->peers[i];
                 }
@@ -492,6 +507,9 @@ CcuResult CcuRelayKernel(CcuKernelArg arg)
     CCU_CHECK(ccu::LoadArg(directBytes, 10));
     CCU_CHECK(ccu::LoadArg(phase, 11));
     CCU_CHECK(ccu::LoadArg(target, 12));
+    ccu::Variable scratch, scratchToken;
+    CCU_CHECK(ccu::LoadArg(scratch, 13));
+    CCU_CHECK(ccu::LoadArg(scratchToken, 14));
     std::vector<ccu::Variable> peerOutput, peerToken, peerPlan, peerPlanBytes;
     bool mesh = true;
     for (uint32_t i = 0; i < reg->channelCount; ++i) {
@@ -514,7 +532,7 @@ CcuResult CcuRelayKernel(CcuKernelArg arg)
     helpers.resize(m);
     targets.resize(m);
     std::vector<ccu::Variable> source(reg->rankSize);
-    ccu::Event copied, staged, sent, restored;
+    ccu::Event copied, staged, sent;
     CCU_IF(root == reg->myRank)
     {
         source[0] = inputBase;
@@ -525,61 +543,54 @@ CcuResult CcuRelayKernel(CcuKernelArg arg)
         for (uint32_t i = 0; i < reg->channelCount; ++i) {
             CCU_CHECK(ccu::NotifyWait(reg->channels[i], 0, RELAY_READY));
         }
+        // Copy is independent of network traffic: CheckParams permits only
+        // disjoint output or exact self alias (doSelf == 0 in that case).
+        if (reg->relayTopology == 4 ? mesh : (reg->copySelf != 0)) {
+            CCU_IF(doSelf != 0)
+            {
+                ccu::LocalAddr src, dst;
+                src.addr = self;
+                src.token = inputToken;
+                dst.addr = output;
+                dst.token = outputToken;
+                CCU_CHECK(ccu::LocalCopy(dst, src, len, copied, 1));
+            }
+        }
         if (mesh) {
             uint16_t helperMask = 0;
             for (uint32_t i = 0; i < reg->channelCount; ++i) {
                 for (uint32_t h = 0; h < m; ++h) {
-                    if (reg->peers[i] == helpers[h]) {
-                        helperMask |= 1u << i;
-                    }
-                }
-            }
-            for (uint32_t i = 0; i < reg->channelCount; ++i) {
-                if ((helperMask & (1u << i)) == 0) {
-                    CCU_CHECK(RelayWrite(reg->channels[i], peerOutput[i], peerToken[i],
-                        source[reg->peers[i]], inputToken, len, sent, 1u << i));
-                }
-            }
-            for (uint32_t i = 0; i < reg->channelCount; ++i) {
-                for (uint32_t h = 0; h < m; ++h) {
                     if (reg->peers[i] != helpers[h]) { continue; }
+                    helperMask |= 1u << i;
+                    // Mesh uses PLAN slots for scratch address/token; Clos
+                    // retains its original helper/length plan on other channels.
+                    CCU_CHECK(ccu::NotifyWait(reg->channels[i], 0, RELAY_PLAN));
                     ccu::Variable tailSource;
                     tailSource = source[targets[h]];
                     tailSource += directBytes;
-                    CCU_CHECK(RelayWrite(reg->channels[i], peerOutput[i], peerToken[i],
+                    CCU_CHECK(RelayWrite(reg->channels[i], peerPlan[i], peerPlanBytes[i],
                         tailSource, inputToken, relayBytes, staged, 1u << i));
                 }
             }
-            CCU_CHECK(ccu::EventWait(staged, helperMask));
-            for (uint32_t i = 0; i < reg->channelCount; ++i) {
-                if ((helperMask & (1u << i)) != 0) {
-                    CCU_CHECK(ccu::NotifyRecord(reg->channels[i], 0, RELAY_STAGED));
-                }
-            }
-            for (uint32_t i = 0; i < reg->channelCount; ++i) {
-                if ((helperMask & (1u << i)) != 0) {
-                    ccu::Variable suffixSource, suffixOutput;
-                    suffixSource = source[reg->peers[i]];
-                    suffixSource += relayBytes;
-                    suffixOutput = peerOutput[i];
-                    suffixOutput += relayBytes;
-                    CCU_CHECK(RelayWrite(reg->channels[i], suffixOutput, peerToken[i],
-                        suffixSource, inputToken, directBytes, sent, 1u << i));
-                }
-            }
-            if (reg->relayTopology != 2) {
-                CCU_CHECK(ccu::EventWait(sent, (1u << reg->channelCount) - 1u));
-            }
             for (uint32_t i = 0; i < reg->channelCount; ++i) {
                 if ((helperMask & (1u << i)) == 0) { continue; }
-                CCU_CHECK(ccu::NotifyWait(reg->channels[i], 0, RELAY_FORWARDED));
+                CCU_CHECK(ccu::EventWait(staged, 1u << i));
+                CCU_CHECK(ccu::NotifyRecord(reg->channels[i], 0, RELAY_STAGED));
+            }
+            // Release forwarding before issuing the helper's independent
+            // output write. Scratch is not reused until FORWARDED below.
+            for (uint32_t i = 0; i < reg->channelCount; ++i) {
                 CCU_CHECK(RelayWrite(reg->channels[i], peerOutput[i], peerToken[i],
-                    source[reg->peers[i]], inputToken, relayBytes, restored, 1u << i));
+                    source[reg->peers[i]], inputToken, len, sent, 1u << i));
             }
-            if (reg->relayTopology == 2) {
-                CCU_CHECK(ccu::EventWait(sent, (1u << reg->channelCount) - 1u));
+            CCU_CHECK(ccu::EventWait(sent, (1u << reg->channelCount) - 1u));
+            // Retain the lifetime barrier: the next slice may reuse scratch
+            // only after every helper's forward and target ACK have completed.
+            for (uint32_t i = 0; i < reg->channelCount; ++i) {
+                if ((helperMask & (1u << i)) != 0) {
+                    CCU_CHECK(ccu::NotifyWait(reg->channels[i], 0, RELAY_FORWARDED));
+                }
             }
-            CCU_CHECK(ccu::EventWait(restored, helperMask));
         } else {
             std::vector<ccu::Variable> plan(reg->channelCount);
             for (uint32_t i = 0; i < reg->channelCount; ++i) {
@@ -600,12 +611,6 @@ CcuResult CcuRelayKernel(CcuKernelArg arg)
         if (reg->relayTopology == 4 ? mesh : (reg->copySelf != 0)) {
             CCU_IF(doSelf != 0)
             {
-                ccu::LocalAddr src, dst;
-                src.addr = self;
-                src.token = inputToken;
-                dst.addr = output;
-                dst.token = outputToken;
-                CCU_CHECK(ccu::LocalCopy(dst, src, len, copied, 1));
                 CCU_CHECK(ccu::EventWait(copied, 1));
             }
         }
@@ -625,6 +630,8 @@ CcuResult CcuRelayKernel(CcuKernelArg arg)
                     CCU_CHECK(RelayReady(reg->channels[i], output, outputToken));
                     CCU_IF(target != NO_HELPER)
                     {
+                        CCU_CHECK(ccu::WriteVariableWithNotify(reg->channels[i], scratch, 3, 0, 1u << 9));
+                        CCU_CHECK(ccu::WriteVariableWithNotify(reg->channels[i], scratchToken, 4, 0, 1u << 10));
                         CCU_CHECK(ccu::NotifyWait(reg->channels[i], 0, RELAY_STAGED));
                     }
                     CCU_IF(target == NO_HELPER)
@@ -649,7 +656,7 @@ CcuResult CcuRelayKernel(CcuKernelArg arg)
                 {
                     CCU_CHECK(ccu::NotifyWait(reg->channels[i], 0, RELAY_READY));
                     CCU_CHECK(RelayWrite(reg->channels[i], peerOutput[i], peerToken[i],
-                        output, outputToken, relayBytes, sent, 1));
+                        scratch, scratchToken, relayBytes, sent, 1));
                     CCU_CHECK(ccu::EventWait(sent, 1));
                     CCU_CHECK(ccu::NotifyRecord(reg->channels[i], 0, RELAY_DONE));
                     CCU_CHECK(ccu::NotifyWait(reg->channels[i], 0, RELAY_DONE_ACK));

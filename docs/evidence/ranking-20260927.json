@@ -1,0 +1,87 @@
+{
+  "source": "https://cannjudge.cn/api/problems/6a98eeb2bf41025d60cde753/ranking?contestId=6a98e72abf41025d60ccb1ee&page=1&size=60",
+  "retrieved": "2026-09-27",
+  "scope": "Performance ranking only; not defense or award results",
+  "rows": [
+    {
+      "rank": 1,
+      "team": "yiran",
+      "submission": 351299,
+      "score": 389.79,
+      "timeUs": [
+        9,
+        942,
+        738,
+        9,
+        2057,
+        1608,
+        9,
+        917,
+        717,
+        9,
+        1681,
+        1316
+      ]
+    },
+    {
+      "rank": 2,
+      "team": "Bueryy",
+      "submission": 348208,
+      "score": 389.7,
+      "timeUs": [
+        9,
+        941,
+        738,
+        9,
+        2059,
+        1610,
+        9,
+        919,
+        720,
+        9,
+        1678,
+        1313
+      ]
+    },
+    {
+      "rank": 3,
+      "team": "cc",
+      "submission": 351812,
+      "score": 389.26,
+      "timeUs": [
+        9,
+        944,
+        739,
+        9,
+        2061,
+        1612,
+        9,
+        922,
+        722,
+        9,
+        1682,
+        1317
+      ]
+    },
+    {
+      "rank": 18,
+      "team": "试一试队",
+      "submission": 351048,
+      "score": 371.34,
+      "timeUs": [
+        11,
+        965,
+        757,
+        12,
+        2064,
+        1615,
+        11,
+        925,
+        726,
+        13,
+        1721,
+        1347
+      ]
+    }
+  ]
+}

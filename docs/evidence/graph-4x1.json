@@ -1,0 +1,22 @@
+{
+  "status": "PASS",
+  "scope": "Retained Checker DOT graphs only; filenames can collide within a second; not performance measurements",
+  "graphs": [
+    {
+      "file": "TaskGraph_20260927134855.dot",
+      "sha256": "2ef77a0a21bfaed4ea02d04ac9ab5170cfb05cd8dcafcedbabf6b9cb353fda45",
+      "transferKinds": {
+        "INPUT->OUTPUT": 4
+      },
+      "networkTransfers": 3,
+      "networkBytes": 1572864,
+      "outputBytesByRank": {
+        "1": 524288,
+        "2": 524288,
+        "3": 524288,
+        "0": 524288
+      },
+      "scratchDependencies": []
+    }
+  ]
+}

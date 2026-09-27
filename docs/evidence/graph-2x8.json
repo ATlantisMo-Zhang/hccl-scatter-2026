@@ -1,0 +1,416 @@
+{
+  "status": "PASS",
+  "scope": "Retained Checker DOT graphs only; filenames can collide within a second; not performance measurements",
+  "graphs": [
+    {
+      "file": "TaskGraph_20260927135235.dot",
+      "sha256": "3a02d859e2fcc73567c7fe57acb560d02de3e776f1354ba4b6193bbac2ee2634",
+      "transferKinds": {
+        "INPUT->OUTPUT": 16
+      },
+      "networkTransfers": 15,
+      "networkBytes": 120,
+      "outputBytesByRank": {
+        "0": 8,
+        "1": 8,
+        "2": 8,
+        "3": 8,
+        "4": 8,
+        "5": 8,
+        "6": 8,
+        "7": 8,
+        "8": 8,
+        "9": 8,
+        "10": 8,
+        "11": 8,
+        "12": 8,
+        "13": 8,
+        "14": 8,
+        "15": 8
+      },
+      "scratchDependencies": []
+    },
+    {
+      "file": "TaskGraph_20260927135236.dot",
+      "sha256": "cb7b9d45447570699891863ed1062d2ef9a4c6258d9fb8d54dcc06e778be9b87",
+      "transferKinds": {
+        "INPUT->OUTPUT": 16
+      },
+      "networkTransfers": 15,
+      "networkBytes": 491520,
+      "outputBytesByRank": {
+        "0": 32768,
+        "1": 32768,
+        "2": 32768,
+        "3": 32768,
+        "4": 32768,
+        "5": 32768,
+        "6": 32768,
+        "7": 32768,
+        "8": 32768,
+        "9": 32768,
+        "10": 32768,
+        "11": 32768,
+        "12": 32768,
+        "13": 32768,
+        "14": 32768,
+        "15": 32768
+      },
+      "scratchDependencies": []
+    },
+    {
+      "file": "TaskGraph_20260927135237.dot",
+      "sha256": "f89d45a2b97da7df6f082c2b8df4ebc1997f86c7dc2df46faf1aa76d2132ac11",
+      "transferKinds": {
+        "INPUT->OUTPUT": 16
+      },
+      "networkTransfers": 15,
+      "networkBytes": 251658180,
+      "outputBytesByRank": {
+        "0": 16777212,
+        "1": 16777212,
+        "2": 16777212,
+        "3": 16777212,
+        "4": 16777212,
+        "5": 16777212,
+        "6": 16777212,
+        "8": 16777212,
+        "9": 16777212,
+        "10": 16777212,
+        "11": 16777212,
+        "12": 16777212,
+        "13": 16777212,
+        "14": 16777212,
+        "15": 16777212,
+        "7": 16777212
+      },
+      "scratchDependencies": []
+    },
+    {
+      "file": "TaskGraph_20260927135238.dot",
+      "sha256": "a547667418244699c79c8df9b8d375f508ded3b1a99ee52a023af953da345c63",
+      "transferKinds": {
+        "INPUT->OUTPUT": 16,
+        "INPUT->CCL": 7,
+        "CCL->OUTPUT": 7
+      },
+      "networkTransfers": 29,
+      "networkBytes": 294363868,
+      "outputBytesByRank": {
+        "0": 16777216,
+        "8": 16777216,
+        "9": 16777216,
+        "10": 16777216,
+        "11": 16777216,
+        "12": 16777216,
+        "13": 16777216,
+        "14": 16777216,
+        "15": 16777216,
+        "1": 16777216,
+        "2": 16777216,
+        "3": 16777216,
+        "4": 16777216,
+        "5": 16777216,
+        "6": 16777216,
+        "7": 16777216
+      },
+      "scratchDependencies": [
+        {
+          "stage": "v3_138",
+          "forward": "v3_187",
+          "helperOutput": "v3_260",
+          "helper": 1,
+          "outputIndependentOfForward": true
+        },
+        {
+          "stage": "v3_167",
+          "forward": "v3_190",
+          "helperOutput": "v3_261",
+          "helper": 2,
+          "outputIndependentOfForward": true
+        },
+        {
+          "stage": "v3_170",
+          "forward": "v3_193",
+          "helperOutput": "v3_262",
+          "helper": 3,
+          "outputIndependentOfForward": true
+        },
+        {
+          "stage": "v3_173",
+          "forward": "v3_196",
+          "helperOutput": "v3_263",
+          "helper": 4,
+          "outputIndependentOfForward": true
+        },
+        {
+          "stage": "v3_176",
+          "forward": "v3_199",
+          "helperOutput": "v3_264",
+          "helper": 5,
+          "outputIndependentOfForward": true
+        },
+        {
+          "stage": "v3_179",
+          "forward": "v3_202",
+          "helperOutput": "v3_265",
+          "helper": 6,
+          "outputIndependentOfForward": true
+        },
+        {
+          "stage": "v3_182",
+          "forward": "v3_205",
+          "helperOutput": "v3_266",
+          "helper": 7,
+          "outputIndependentOfForward": true
+        }
+      ]
+    },
+    {
+      "file": "TaskGraph_20260927135239.dot",
+      "sha256": "f891dbe886ff8960f389a2cac11f9b410b2461b28d3e915d7de371006fb0cd06",
+      "transferKinds": {
+        "INPUT->OUTPUT": 16,
+        "INPUT->CCL": 7,
+        "CCL->OUTPUT": 7
+      },
+      "networkTransfers": 29,
+      "networkBytes": 294363928,
+      "outputBytesByRank": {
+        "15": 16777220,
+        "0": 16777220,
+        "1": 16777220,
+        "2": 16777220,
+        "3": 16777220,
+        "4": 16777220,
+        "5": 16777220,
+        "6": 16777220,
+        "7": 16777220,
+        "8": 16777220,
+        "9": 16777220,
+        "10": 16777220,
+        "11": 16777220,
+        "12": 16777220,
+        "13": 16777220,
+        "14": 16777220
+      },
+      "scratchDependencies": [
+        {
+          "stage": "v3_163",
+          "forward": "v3_166",
+          "helperOutput": "v3_276",
+          "helper": 8,
+          "outputIndependentOfForward": true
+        },
+        {
+          "stage": "v3_191",
+          "forward": "v3_169",
+          "helperOutput": "v3_277",
+          "helper": 9,
+          "outputIndependentOfForward": true
+        },
+        {
+          "stage": "v3_194",
+          "forward": "v3_172",
+          "helperOutput": "v3_278",
+          "helper": 10,
+          "outputIndependentOfForward": true
+        },
+        {
+          "stage": "v3_197",
+          "forward": "v3_175",
+          "helperOutput": "v3_279",
+          "helper": 11,
+          "outputIndependentOfForward": true
+        },
+        {
+          "stage": "v3_200",
+          "forward": "v3_178",
+          "helperOutput": "v3_280",
+          "helper": 12,
+          "outputIndependentOfForward": true
+        },
+        {
+          "stage": "v3_203",
+          "forward": "v3_181",
+          "helperOutput": "v3_281",
+          "helper": 13,
+          "outputIndependentOfForward": true
+        },
+        {
+          "stage": "v3_206",
+          "forward": "v3_184",
+          "helperOutput": "v3_282",
+          "helper": 14,
+          "outputIndependentOfForward": true
+        }
+      ]
+    },
+    {
+      "file": "TaskGraph_20260927135240.dot",
+      "sha256": "511a8c0d31529b246d4e9445f500e964aa00ce076603d23e8511ccd8aac3a3ad",
+      "transferKinds": {},
+      "networkTransfers": 0,
+      "networkBytes": 0,
+      "outputBytesByRank": {},
+      "scratchDependencies": []
+    },
+    {
+      "file": "TaskGraph_20260927135241.dot",
+      "sha256": "1e193d1fdd036374ae98ba2439d4f66356aa0bc289e4b5ef3d1eadcf38a96a68",
+      "transferKinds": {
+        "INPUT->OUTPUT": 16
+      },
+      "networkTransfers": 15,
+      "networkBytes": 491520,
+      "outputBytesByRank": {
+        "1": 32768,
+        "2": 32768,
+        "3": 32768,
+        "4": 32768,
+        "5": 32768,
+        "6": 32768,
+        "7": 32768,
+        "8": 32768,
+        "9": 32768,
+        "10": 32768,
+        "11": 32768,
+        "12": 32768,
+        "13": 32768,
+        "14": 32768,
+        "15": 32768,
+        "0": 32768
+      },
+      "scratchDependencies": []
+    },
+    {
+      "file": "TaskGraph_20260927135244.dot",
+      "sha256": "bffd65d767fdf2a804d31f78d145208a2f7a424829cc3e59cbf2be6ebbb42424",
+      "transferKinds": {
+        "INPUT->OUTPUT": 32,
+        "INPUT->CCL": 14,
+        "CCL->OUTPUT": 14
+      },
+      "networkTransfers": 58,
+      "networkBytes": 588727796,
+      "outputBytesByRank": {
+        "8": 33554436,
+        "0": 33554436,
+        "1": 33554436,
+        "2": 33554436,
+        "3": 33554436,
+        "4": 33554436,
+        "5": 33554436,
+        "6": 33554436,
+        "7": 33554436,
+        "9": 33554436,
+        "10": 33554436,
+        "11": 33554436,
+        "12": 33554436,
+        "13": 33554436,
+        "14": 33554436,
+        "15": 33554436
+      },
+      "scratchDependencies": [
+        {
+          "stage": "v3_163",
+          "forward": "v3_166",
+          "helperOutput": "v3_278",
+          "helper": 9,
+          "outputIndependentOfForward": true
+        },
+        {
+          "stage": "v3_191",
+          "forward": "v3_169",
+          "helperOutput": "v3_279",
+          "helper": 10,
+          "outputIndependentOfForward": true
+        },
+        {
+          "stage": "v3_194",
+          "forward": "v3_172",
+          "helperOutput": "v3_280",
+          "helper": 11,
+          "outputIndependentOfForward": true
+        },
+        {
+          "stage": "v3_197",
+          "forward": "v3_175",
+          "helperOutput": "v3_281",
+          "helper": 12,
+          "outputIndependentOfForward": true
+        },
+        {
+          "stage": "v3_200",
+          "forward": "v3_178",
+          "helperOutput": "v3_282",
+          "helper": 13,
+          "outputIndependentOfForward": true
+        },
+        {
+          "stage": "v3_203",
+          "forward": "v3_181",
+          "helperOutput": "v3_283",
+          "helper": 14,
+          "outputIndependentOfForward": true
+        },
+        {
+          "stage": "v3_206",
+          "forward": "v3_184",
+          "helperOutput": "v3_284",
+          "helper": 15,
+          "outputIndependentOfForward": true
+        },
+        {
+          "stage": "v3_661",
+          "forward": "v3_530",
+          "helperOutput": "v3_758",
+          "helper": 9,
+          "outputIndependentOfForward": true
+        },
+        {
+          "stage": "v3_684",
+          "forward": "v3_534",
+          "helperOutput": "v3_759",
+          "helper": 10,
+          "outputIndependentOfForward": true
+        },
+        {
+          "stage": "v3_693",
+          "forward": "v3_538",
+          "helperOutput": "v3_760",
+          "helper": 11,
+          "outputIndependentOfForward": true
+        },
+        {
+          "stage": "v3_697",
+          "forward": "v3_542",
+          "helperOutput": "v3_761",
+          "helper": 12,
+          "outputIndependentOfForward": true
+        },
+        {
+          "stage": "v3_701",
+          "forward": "v3_546",
+          "helperOutput": "v3_762",
+          "helper": 13,
+          "outputIndependentOfForward": true
+        },
+        {
+          "stage": "v3_705",
+          "forward": "v3_550",
+          "helperOutput": "v3_763",
+          "helper": 14,
+          "outputIndependentOfForward": true
+        },
+        {
+          "stage": "v3_709",
+          "forward": "v3_554",
+          "helperOutput": "v3_764",
+          "helper": 15,
+          "outputIndependentOfForward": true
+        }
+      ]
+    }
+  ]
+}

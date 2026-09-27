@@ -1,0 +1,111 @@
+{
+  "baseline": {
+    "name": "A21",
+    "origin": "F18_A21_SENT_RESTORE_20260918-181850/delivery/final",
+    "archiveSHA256": "335b3d0834bfad47ee088e80b21aea814185fc907788ba5380c262d50dc9a9e2",
+    "files": {
+      ".clang-format": "8ac26e997fe64aa725e9c85ea7313057f01747f7ab6cdbfc5bba386a370469f9",
+      ".gitattributes": "f6b95230e226483126446c24523856e354c162d449d0e7a0a7c2e3a53c19c325",
+      ".gitignore": "b90c7179dd89dac61a0bbf040cd3c2baaae1fc101e01a308ddb4b1b71b996ae8",
+      "build.sh": "642f070e887127212946b5b87f978277fb60e13ad619d28c0ea55452704f454e",
+      "CMakeLists.txt": "1584dfa3970b4160502e202c40d3a00667f5cb741963de2f4527cf35fd444006",
+      "include/binary_stream.h": "9bfd50bcbbd577c1ac28304548c4b69513fcf4b38507320abff4e88e21f0a440",
+      "include/common.h": "81e9808cce7897f197c25ee327ff5ba7de92c8ae1a7230dd12d57f2f67b47d23",
+      "include/custom.h": "0ceb3e4554a097138377fdad02347f10c3d6532f59ca5fde0705e836a4a47b45",
+      "include/hccl.h": "47d08dc9961a3e6bdbe81afd7cbd519423bcb4f2b6b78e87d64fc4f02f676903",
+      "include/log.h": "59dfc121916d11b2d446b14286d1efbf0335a661ea84c42fc0ed0a22ab0828f4",
+      "LICENSE": "c5accbbd8546e94c34aed24afe689a617627d18eed5a6c48277e48db57c23851",
+      "op_host/CMakeLists.txt": "821defcca7a81dd34a09f7d70970a004611eb719d41dbd92dbc3ec8baff6f586",
+      "op_host/exec_op.cc": "3b3f7d0f0e2667661315acde87908fba2967f76fddc2d7dc0325a4d3d35509a1",
+      "op_host/exec_op.h": "da1698f5ca99cad87371ffd36dc03553e7117987dd9c28d1246b84808e6c8315",
+      "op_host/scatter.cc": "3facc97b55003c6103d2bf51164c59ebc9e3055d1d220ed0a46543fb0d5db66e",
+      "op_kernel_ccu/ccu_kernel.cc": "e0a0b874f0fe971a072ee6f9fe7e62f952579eec8f3c22df5b05a8e73556ff1f",
+      "op_kernel_ccu/ccu_kernel.h": "c371a23c98a6b55615edddcc4de386af1dd4d5acd44828d2266f850965578797",
+      "op_kernel_ccu/CMakeLists.txt": "af1a3bb225862e0318de1708eaa8193a3697e6fefea2b735db7417910aecc07e",
+      "README.md": "05e21c24a754982671a21998bdcc3e33f6acbfce906e41582511b9e36a24895e"
+    }
+  },
+  "references": [
+    {
+      "team": "yiran",
+      "commit": "c2b149e43613cdcae482a1eb83bcd1afb9643a14",
+      "path": "03_university/CANN-HCCL-Northeast-Competition-2026/final/submissions/哈尔滨工业大学+yiran",
+      "pullRequest": null,
+      "url": "https://gitcode.com/cann/cann-ops-competitions/tree/c2b149e43613cdcae482a1eb83bcd1afb9643a14/03_university/CANN-HCCL-Northeast-Competition-2026/final/submissions/哈尔滨工业大学+yiran",
+      "files": {
+        ".clang-format": "8ac26e997fe64aa725e9c85ea7313057f01747f7ab6cdbfc5bba386a370469f9",
+        ".gitattributes": "f6b95230e226483126446c24523856e354c162d449d0e7a0a7c2e3a53c19c325",
+        ".gitignore": "b90c7179dd89dac61a0bbf040cd3c2baaae1fc101e01a308ddb4b1b71b996ae8",
+        "build.sh": "642f070e887127212946b5b87f978277fb60e13ad619d28c0ea55452704f454e",
+        "CMakeLists.txt": "1584dfa3970b4160502e202c40d3a00667f5cb741963de2f4527cf35fd444006",
+        "include/binary_stream.h": "9bfd50bcbbd577c1ac28304548c4b69513fcf4b38507320abff4e88e21f0a440",
+        "include/common.h": "81e9808cce7897f197c25ee327ff5ba7de92c8ae1a7230dd12d57f2f67b47d23",
+        "include/custom.h": "8b6d5ab91e8780a039015e5a5f354aa198dc9f8b66d7c81e83ec1b04933546be",
+        "include/hccl.h": "47d08dc9961a3e6bdbe81afd7cbd519423bcb4f2b6b78e87d64fc4f02f676903",
+        "include/log.h": "59dfc121916d11b2d446b14286d1efbf0335a661ea84c42fc0ed0a22ab0828f4",
+        "LICENSE": "c5accbbd8546e94c34aed24afe689a617627d18eed5a6c48277e48db57c23851",
+        "op_host/CMakeLists.txt": "821defcca7a81dd34a09f7d70970a004611eb719d41dbd92dbc3ec8baff6f586",
+        "op_host/exec_op.cc": "7a7d9e35a77be8b026c3f13e352d1ce20ac3ca1a3482f226f63ce067461231b3",
+        "op_host/exec_op.h": "800392840f44c3c475ad0f11375758b146a4220f052fab7f0b7a67f2651e4aa8",
+        "op_host/scatter.cc": "02888fd0e344bf12b3b0628892d48d527775c0698856aa6f2ea95fde4b1bec58",
+        "op_kernel_ccu/ccu_kernel.cc": "846a03ffddaa72e0a0749c1edfed165c58298083e2b3bdbc6dc9d5ca5e861340",
+        "op_kernel_ccu/ccu_kernel.h": "07e544c82bae809d7e590922fe12cdec55dcf20087f1c904517bb1d46a4a3ea9",
+        "op_kernel_ccu/CMakeLists.txt": "af1a3bb225862e0318de1708eaa8193a3697e6fefea2b735db7417910aecc07e",
+        "README.md": "05e21c24a754982671a21998bdcc3e33f6acbfce906e41582511b9e36a24895e"
+      }
+    },
+    {
+      "team": "Bueryy",
+      "commit": "99dbcddc8fdf51d462ab33002ee2d3843c146606",
+      "path": "03_university/CANN-HCCL-Northeast-Competition-2026/final/submissions/东北大学+Bueryy",
+      "pullRequest": 1861,
+      "url": "https://gitcode.com/cann/cann-ops-competitions/tree/99dbcddc8fdf51d462ab33002ee2d3843c146606/03_university/CANN-HCCL-Northeast-Competition-2026/final/submissions/东北大学+Bueryy",
+      "files": {
+        "build.sh": "0ac96a3ac6c406091da566c3f700a9a6b52343dacfe30903cc69c0f5363a9c81",
+        "CMakeLists.txt": "815a6a9002fccb53b8ce6d95ca5876a844d86bd93e6c7a1b544fba056e78b5d9",
+        "include/binary_stream.h": "5e83e359a7465bdeded363fc16b939e90b00d633b8e5ef93335b8e031f6f4fb8",
+        "include/common.h": "95df4b0c5835a2e3317f2d2ccf3121f7fa1a6979555146fd6d4264d63b6905eb",
+        "include/custom.h": "166d47fffd8d07b7422e88cfbe9e0cfc38083f57a8c95c0fb8feb49746a26dc3",
+        "include/hccl.h": "86e08b1bc084460849d12d51dd6d663e2f5ee6e660fcce9f4340f1db61e6380f",
+        "include/log.h": "089afc7f4eb444150723f170ddb99b9ac553033c61a1bf41d5c3277d62f29af3",
+        "LICENSE": "26730096c8817eef15dbf3885acecdc1fb114f96f9bbbf2b43cbca0c5b04eee9",
+        "op_host/CMakeLists.txt": "dc05feab3ee60d4aa0753cd3ef5f9881834bf8ae683ab74f36ed7949f8602f49",
+        "op_host/exec_op.cc": "5fd6a04170833c50d747034c61305767346517ab3d50258edb2e43b1d3c7b528",
+        "op_host/exec_op.h": "89b47bec13c6439ff766bff889b0426b727eb261aa7fcae21bc5920493372f24",
+        "op_host/scatter.cc": "ab211ac243d919b52becd5349c1365a22bb2c2b1b9973175ad175456b4321ba1",
+        "op_kernel_ccu/ccu_kernel.cc": "5b9c4a24d3b61e53c85fbc0a6c79c8ebf861cdaa17626bc1a23b3fcb8b3529c2",
+        "op_kernel_ccu/ccu_kernel.h": "2058559575d6ea52f717842735f8fdeb83cfbfe6c6e65913355a068f3fe1c7b2",
+        "op_kernel_ccu/CMakeLists.txt": "013202a290daf10672f6f155ea1750809c7ff9657f2efbad2bfc9c33652a3c10",
+        "README.md": "89c1767f7eaee322f34a55c6db96b94f6a3fafb72c48f749d42653082285e2bb"
+      }
+    },
+    {
+      "team": "cc",
+      "commit": "c2b149e43613cdcae482a1eb83bcd1afb9643a14",
+      "path": "03_university/CANN-HCCL-Northeast-Competition-2026/final/submissions/哈尔滨工业大学+cc",
+      "pullRequest": null,
+      "url": "https://gitcode.com/cann/cann-ops-competitions/tree/c2b149e43613cdcae482a1eb83bcd1afb9643a14/03_university/CANN-HCCL-Northeast-Competition-2026/final/submissions/哈尔滨工业大学+cc",
+      "files": {
+        ".clang-format": "8ac26e997fe64aa725e9c85ea7313057f01747f7ab6cdbfc5bba386a370469f9",
+        ".gitattributes": "f6b95230e226483126446c24523856e354c162d449d0e7a0a7c2e3a53c19c325",
+        ".gitignore": "b90c7179dd89dac61a0bbf040cd3c2baaae1fc101e01a308ddb4b1b71b996ae8",
+        "build.sh": "642f070e887127212946b5b87f978277fb60e13ad619d28c0ea55452704f454e",
+        "CMakeLists.txt": "1584dfa3970b4160502e202c40d3a00667f5cb741963de2f4527cf35fd444006",
+        "include/binary_stream.h": "9bfd50bcbbd577c1ac28304548c4b69513fcf4b38507320abff4e88e21f0a440",
+        "include/common.h": "81e9808cce7897f197c25ee327ff5ba7de92c8ae1a7230dd12d57f2f67b47d23",
+        "include/custom.h": "b3e558f5811efe71bc38a58752a4e65d6b2c180a83883463a61917f45a4016ad",
+        "include/hccl.h": "47d08dc9961a3e6bdbe81afd7cbd519423bcb4f2b6b78e87d64fc4f02f676903",
+        "include/log.h": "59dfc121916d11b2d446b14286d1efbf0335a661ea84c42fc0ed0a22ab0828f4",
+        "LICENSE": "c5accbbd8546e94c34aed24afe689a617627d18eed5a6c48277e48db57c23851",
+        "op_host/CMakeLists.txt": "821defcca7a81dd34a09f7d70970a004611eb719d41dbd92dbc3ec8baff6f586",
+        "op_host/exec_op.cc": "f634dc2a06ddbe2a4219c706360aa5f858d59181475af141295adb3e08e729b2",
+        "op_host/exec_op.h": "da1698f5ca99cad87371ffd36dc03553e7117987dd9c28d1246b84808e6c8315",
+        "op_host/scatter.cc": "46c46fed8586e9f299038c58c60da6c6c8336fcbc4fb5fbe1c701df35a73bbe5",
+        "op_kernel_ccu/ccu_kernel.cc": "26ea760d3bd009d1b26553091e856f4947a9cfb9f27140e739c9b6278076d664",
+        "op_kernel_ccu/ccu_kernel.h": "6ad161e1847d5a7508be1a2461187bfa4a92169a6e2aeff19d201679b4090d0c",
+        "op_kernel_ccu/CMakeLists.txt": "af1a3bb225862e0318de1708eaa8193a3697e6fefea2b735db7417910aecc07e",
+        "README.md": "05e21c24a754982671a21998bdcc3e33f6acbfce906e41582511b9e36a24895e"
+      }
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+meta:
+  podNum: 1
+  serNum: 2
+  rankNum: 12
+topology:
+  - podId: 0
+    servers:
+      - serId: 0
+        ranks: [0, 1, 2, 3, 4, 5, 6, 7]
+      - serId: 1
+        ranks: [0, 1, 2, 3]

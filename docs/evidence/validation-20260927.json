@@ -1,0 +1,376 @@
+{
+  "version": "postrace-20260927",
+  "baseline": "A21",
+  "references": "performance rank 1/2/3",
+  "compiler": "CANN 9.1.0, WSL Ubuntu, g++/mpicxx",
+  "buildExit": 0,
+  "librarySHA256": "f7996a52dae7eacdc0937837c77e6bfd045120696d34e3d4e6c4da9aeb3832cc",
+  "driverSHA256": "3a39d9240847ccce4afce635c1d82604d8e22e906d423392ff66adbe98a92abf",
+  "driverSourceSHA256": "d3e4a7698d42aa9aeffeac255a7ba21f1ccae8f530694ab956c74f72a3634b0f",
+  "sources": {
+    "build.sh": "642f070e887127212946b5b87f978277fb60e13ad619d28c0ea55452704f454e",
+    "CMakeLists.txt": "1584dfa3970b4160502e202c40d3a00667f5cb741963de2f4527cf35fd444006",
+    "include/binary_stream.h": "9bfd50bcbbd577c1ac28304548c4b69513fcf4b38507320abff4e88e21f0a440",
+    "include/common.h": "81e9808cce7897f197c25ee327ff5ba7de92c8ae1a7230dd12d57f2f67b47d23",
+    "include/custom.h": "3d6c632233cea4f841dc75895768d10d11c713c37f63e3871d23f791884e7ee9",
+    "include/hccl.h": "47d08dc9961a3e6bdbe81afd7cbd519423bcb4f2b6b78e87d64fc4f02f676903",
+    "include/log.h": "59dfc121916d11b2d446b14286d1efbf0335a661ea84c42fc0ed0a22ab0828f4",
+    "LICENSE": "c5accbbd8546e94c34aed24afe689a617627d18eed5a6c48277e48db57c23851",
+    "op_host/CMakeLists.txt": "821defcca7a81dd34a09f7d70970a004611eb719d41dbd92dbc3ec8baff6f586",
+    "op_host/exec_op.cc": "7103725c608f81823b84d64a344a87db8dcf480f77f689c8efe98e0572dd4836",
+    "op_host/exec_op.h": "da1698f5ca99cad87371ffd36dc03553e7117987dd9c28d1246b84808e6c8315",
+    "op_host/scatter.cc": "57e61be6d799ad3d4a8fd78aa57c835c1b1e9b78d6ea9e3dfd08c39b3b24d534",
+    "op_kernel_ccu/ccu_kernel.cc": "a3a80d274b7350f206aa9dfcec74fd23f54cd555655688c9a473179f609640ad",
+    "op_kernel_ccu/ccu_kernel.h": "c371a23c98a6b55615edddcc4de386af1dd4d5acd44828d2266f850965578797",
+    "op_kernel_ccu/CMakeLists.txt": "af1a3bb225862e0318de1708eaa8193a3697e6fefea2b735db7417910aecc07e",
+    "README.md": "99af25d757191df6123fadf5bf4ccaf078a1cf1d97a426e7ec01961186afd3b6"
+  },
+  "runnerSHA256": "2d63a1765d3510a63bcbdd0e77b10a00a748d17c2e620981284c6d9b67423416",
+  "sharedRunnerSHA256": "cea13a21e92e760e063396ab30264e65164df9fd22a62c05647a414a54f21820",
+  "checkerSHA256": "3c6ff13fee42b18d67a64bbb00a6e0c23a23eadaf0c8a319b3e31ea41457d1d5",
+  "runnerRepair": "Private new XN/GSA/CKE zero initialization only",
+  "isolation": "Independent VM copy; user/mount/IPC/PID namespaces",
+  "HCCL_BUFFSIZE": "4",
+  "actualScratchCapacityBytes": 8388608,
+  "officialPerformanceMeasured": false,
+  "numericalCases": 32,
+  "rankChecks": 356,
+  "runs": [
+    {
+      "topology": "4x1",
+      "mode": "nonrelay_mix",
+      "rounds": [
+        {
+          "round": 0,
+          "root": 0,
+          "count": 17,
+          "bytesPerRank": 68,
+          "totalInputBytes": 272
+        },
+        {
+          "round": 1,
+          "root": 3,
+          "count": 8192,
+          "bytesPerRank": 32768,
+          "totalInputBytes": 131072
+        },
+        {
+          "round": 2,
+          "root": 3,
+          "count": 8192,
+          "bytesPerRank": 32768,
+          "totalInputBytes": 131072
+        },
+        {
+          "round": 3,
+          "root": 0,
+          "count": 4194303,
+          "bytesPerRank": 16777212,
+          "totalInputBytes": 67108848
+        },
+        {
+          "round": 4,
+          "root": 0,
+          "count": 4194304,
+          "bytesPerRank": 16777216,
+          "totalInputBytes": 67108864
+        },
+        {
+          "round": 5,
+          "root": 3,
+          "count": 1,
+          "bytesPerRank": 4,
+          "totalInputBytes": 16
+        },
+        {
+          "round": 6,
+          "root": 3,
+          "count": 0,
+          "bytesPerRank": 0,
+          "totalInputBytes": 0
+        },
+        {
+          "round": 7,
+          "root": 0,
+          "count": 131072,
+          "bytesPerRank": 524288,
+          "totalInputBytes": 2097152
+        }
+      ],
+      "rankChecks": 32,
+      "driverExit": 0,
+      "checkerExit": 0,
+      "checkerOperations": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "numericalLogSHA256": "3859b2e7074d31fa119d9ddd8f7362b812309396b81de76f92afd00d3f6c780e",
+      "vmLogSHA256": "08f9602d55d522b872ef3cbe34f365987cc08f614d74612ad3f7b871ec5e96f4",
+      "graphReport": "graph-4x1.json",
+      "retainedGraphs": 1,
+      "observedRunnerProcessCount": 1,
+      "wrapperSecondsNotPerformance": 43.42
+    },
+    {
+      "topology": "8plus4",
+      "mode": "nonrelay_mix",
+      "rounds": [
+        {
+          "round": 0,
+          "root": 0,
+          "count": 17,
+          "bytesPerRank": 68,
+          "totalInputBytes": 816
+        },
+        {
+          "round": 1,
+          "root": 11,
+          "count": 8192,
+          "bytesPerRank": 32768,
+          "totalInputBytes": 393216
+        },
+        {
+          "round": 2,
+          "root": 11,
+          "count": 8192,
+          "bytesPerRank": 32768,
+          "totalInputBytes": 393216
+        },
+        {
+          "round": 3,
+          "root": 0,
+          "count": 4194303,
+          "bytesPerRank": 16777212,
+          "totalInputBytes": 201326544
+        },
+        {
+          "round": 4,
+          "root": 0,
+          "count": 4194304,
+          "bytesPerRank": 16777216,
+          "totalInputBytes": 201326592
+        },
+        {
+          "round": 5,
+          "root": 11,
+          "count": 1,
+          "bytesPerRank": 4,
+          "totalInputBytes": 48
+        },
+        {
+          "round": 6,
+          "root": 11,
+          "count": 0,
+          "bytesPerRank": 0,
+          "totalInputBytes": 0
+        },
+        {
+          "round": 7,
+          "root": 0,
+          "count": 131072,
+          "bytesPerRank": 524288,
+          "totalInputBytes": 6291456
+        }
+      ],
+      "rankChecks": 96,
+      "driverExit": 0,
+      "checkerExit": 0,
+      "checkerOperations": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "numericalLogSHA256": "95113f4ef8cf042ef1128636fc2005929c20eed1b4477f4dd4a1b6c61eb55f8f",
+      "vmLogSHA256": "e2093a2864a5eb0952547d4f4cf796b6bc42db6cd4ca4728001ae9b288a97a9b",
+      "graphReport": "graph-8plus4.json",
+      "retainedGraphs": 3,
+      "observedRunnerProcessCount": 1,
+      "wrapperSecondsNotPerformance": 76.92
+    },
+    {
+      "topology": "2x8",
+      "mode": "dual_boundary",
+      "rounds": [
+        {
+          "round": 0,
+          "root": 0,
+          "count": 1,
+          "bytesPerRank": 4,
+          "totalInputBytes": 64
+        },
+        {
+          "round": 1,
+          "root": 15,
+          "count": 2,
+          "bytesPerRank": 8,
+          "totalInputBytes": 128
+        },
+        {
+          "round": 2,
+          "root": 15,
+          "count": 8192,
+          "bytesPerRank": 32768,
+          "totalInputBytes": 524288
+        },
+        {
+          "round": 3,
+          "root": 7,
+          "count": 4194303,
+          "bytesPerRank": 16777212,
+          "totalInputBytes": 268435392
+        },
+        {
+          "round": 4,
+          "root": 0,
+          "count": 4194304,
+          "bytesPerRank": 16777216,
+          "totalInputBytes": 268435456
+        },
+        {
+          "round": 5,
+          "root": 15,
+          "count": 4194305,
+          "bytesPerRank": 16777220,
+          "totalInputBytes": 268435520
+        },
+        {
+          "round": 6,
+          "root": 7,
+          "count": 0,
+          "bytesPerRank": 0,
+          "totalInputBytes": 0
+        },
+        {
+          "round": 7,
+          "root": 0,
+          "count": 8192,
+          "bytesPerRank": 32768,
+          "totalInputBytes": 524288
+        },
+        {
+          "round": 8,
+          "root": 8,
+          "count": 8388609,
+          "bytesPerRank": 33554436,
+          "totalInputBytes": 536870976
+        }
+      ],
+      "rankChecks": 144,
+      "driverExit": 0,
+      "checkerExit": 0,
+      "checkerOperations": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "numericalLogSHA256": "ee4d8446fef46685f1642b3a8b60eb5284a1081621900b1099a0954e90ce700e",
+      "vmLogSHA256": "0a74371030e0a991ef82be6a1960253730e93c9aab50ca84abc03e5bb11b813f",
+      "graphReport": "graph-2x8.json",
+      "retainedGraphs": 8,
+      "observedRunnerProcessCount": 1,
+      "wrapperSecondsNotPerformance": 102.83
+    },
+    {
+      "topology": "4x3",
+      "mode": "m4x3",
+      "rounds": [
+        {
+          "round": 0,
+          "root": 0,
+          "count": 4194304,
+          "bytesPerRank": 16777216,
+          "totalInputBytes": 201326592
+        },
+        {
+          "round": 1,
+          "root": 11,
+          "count": 4194305,
+          "bytesPerRank": 16777220,
+          "totalInputBytes": 201326640
+        },
+        {
+          "round": 2,
+          "root": 3,
+          "count": 17,
+          "bytesPerRank": 68,
+          "totalInputBytes": 816
+        },
+        {
+          "round": 3,
+          "root": 3,
+          "count": 8388608,
+          "bytesPerRank": 33554432,
+          "totalInputBytes": 402653184
+        },
+        {
+          "round": 4,
+          "root": 11,
+          "count": 0,
+          "bytesPerRank": 0,
+          "totalInputBytes": 0
+        },
+        {
+          "round": 5,
+          "root": 11,
+          "count": 4194303,
+          "bytesPerRank": 16777212,
+          "totalInputBytes": 201326544
+        },
+        {
+          "round": 6,
+          "root": 6,
+          "count": 4194306,
+          "bytesPerRank": 16777224,
+          "totalInputBytes": 201326688
+        }
+      ],
+      "rankChecks": 84,
+      "driverExit": 0,
+      "checkerExit": 0,
+      "checkerOperations": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "numericalLogSHA256": "2ad6f20d36f86f79790b1bd68d2e6c80a917582a9dbda26b3a58e04d310bc43a",
+      "vmLogSHA256": "ac132a38c70f25bd3294f994802e9ee2bea5da08fbec8ba076dbfc4bc503e2c7",
+      "graphReport": "graph-4x3.json",
+      "retainedGraphs": 4,
+      "observedRunnerProcessCount": 1,
+      "wrapperSecondsNotPerformance": 68.17
+    }
+  ],
+  "exactSelfAlias": {
+    "topology": "4x3",
+    "root": 11,
+    "bytesPerRank": 16777216,
+    "driverExit": 0,
+    "rankPassCount": 12,
+    "checkerExit": 1,
+    "checkerError406": true,
+    "numericalLogSHA256": "1e76745ceb8caf1a855a5ef5bfa8b09e9ed114400825f8ac6e02199f88dc35ca",
+    "vmLogSHA256": "7ffa8907e2ca2c18c584f939fd15a6667e7b7ac673672324a32ece02422f7d8a",
+    "scope": "Separate result; not included in the 32 full driver+Checker passes"
+  }
+}

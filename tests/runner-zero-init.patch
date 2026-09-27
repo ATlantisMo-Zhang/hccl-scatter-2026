@@ -1,0 +1,12 @@
+--- a/ccu_resource_v1.cc
++++ b/ccu_resource_v1.cc
+@@ -32,6 +32,9 @@
+     rankId_ = rankId;
+     rankSize_ = rankSize;
+     for (int i = 0; i < HcclSim::DIE_NUM; i++) {
++        xn_[i].fill(0);
++        gsa_[i].fill(0);
++        cke_[i].fill(0);
+         ms_[i].resize(SimCcuV1::CCU_RESOURCE_MS_SIZE);
+     }
+ }

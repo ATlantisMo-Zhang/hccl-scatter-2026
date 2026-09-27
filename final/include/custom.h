@@ -16,7 +16,7 @@
 #include "common.h"
 #include "log.h"
 
-constexpr uint64_t SCATTER_CACHE_READY = 0x5343415454455231ULL;
+constexpr uint64_t SCATTER_CACHE_READY = 0x5343415454455232ULL;
 
 struct CcuKernelArgBase {
     ChannelHandle channels[MAX_RANK_SIZE]{};
@@ -46,6 +46,8 @@ struct AlgResourceCtx {
     uint32_t reserved = 0;
     uint32_t localMask = 0;
     uint32_t relayTopology = 0;
+    void *relayScratch = nullptr;
+    uint64_t relayScratchBytes = 0;
     ThreadHandle slaveThread = 0;
     CcuGroup groups[MAX_RANK_SIZE]{};
 
@@ -67,7 +69,8 @@ struct AlgResourceCtx {
                 && (out.relayTopology != 4 || out.rankSize != 12)) { return HCCL_E_PARA; }
             uint32_t localCount = 0;
             for (uint32_t mask = out.localMask; mask != 0; mask >>= 1) { localCount += mask & 1u; }
-            if (out.groupCount != 2 || (out.localMask & ~allRanks) != 0
+            if (out.relayScratch == nullptr || out.relayScratchBytes < sizeof(float)
+                || out.groupCount != 2 || (out.localMask & ~allRanks) != 0
                 || (out.localMask & (1u << out.myRank)) == 0
                 || localCount != out.rankSize / out.relayTopology) { return HCCL_E_PARA; }
         }
