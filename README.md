@@ -1,16 +1,20 @@
 # HCCL Scatter：A21 与赛后优化版
 
-2026 HCCL 通信库创新大赛东北赛区 Scatter 实现：初赛使用 AICPU + TS，决赛使用 CCU。**本次以最终参赛版本 A21 为基线，参考跑分前三 yiran、Bueryy、cc 优化；不以答辩名次为依据。**
+2026 HCCL 通信库创新大赛东北赛区 Scatter 实现：初赛使用 AICPU + TS，决赛使用 CCU。决赛以 A21 为基线，最终提交是它的一个小变体 M（4×3 自拷贝提前）；赛后优化参考了跑分前三 yiran、Bueryy、cc 的公开源码，不以答辩名次为依据。
 
-`final/` 现为赛后优化代码，A21 的 19 个原始文件完整保存在 `baselines/a21/`。赛后版尚无官方性能成绩；本地验证结果和边界见[验证记录](docs/validation-postrace.md)。
+仓库里有三份决赛工程：`submitted/` 是平台最终提交（351048，代号 M）的原样 19 个文件，`baselines/a21/` 是提交前的 A21 快照，`final/` 是赛后重构代码。三份的 magic、cache tag 和中转比例都不一样，差异与哈希见[提交包身份](docs/submitted-identity.md)。
+
+`final/` 还没有官方性能成绩，本地验证结果和边界见[验证记录](docs/validation-postrace.md)。复现参赛版本的行为用 `submitted/`；跑本地数值验证要用 `final/`，`tests/` 的驱动按 `final/include/custom.h` 的布局解缓存。
 
 ## 代码与记录
 
 | 路径 | 内容 |
 |---|---|
-| [final/](final/) | 新版完整 CCU 工程：独立中转缓冲、转发提前、均衡分片、逐通道完成通知 |
+| [submitted/](submitted/) | 最终提交 M／351048 的原样源码（19 文件，逐字节来自冻结包） |
+| [final/](final/) | 赛后完整 CCU 工程：独立中转缓冲、转发提前、均衡分片、逐通道完成通知 |
 | [baselines/a21/](baselines/a21/) | 最终参赛 A21 原始快照，可独立构建；不是后来的 M 候选 |
 | [preliminary/](preliminary/) | 初赛完整 AICPU 工程 |
+| [提交包身份](docs/submitted-identity.md) | 351048 的来源、19 文件哈希、与 A21 和赛后版的差异、结论边界 |
 | [赛后复盘](docs/postmortem.md) | 跑分前三的源码对照、A21 短板、改动及未兑现部分 |
 | [验证记录](docs/validation-postrace.md) | 构建、数值/边界、Checker、任务图与性能证据边界 |
 | [历史账本](docs/performance-journey.md) | 比赛期间逐版本成绩，保留当时记录并标注修正 |
