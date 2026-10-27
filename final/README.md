@@ -2,7 +2,7 @@
 
 决赛阶段的完整工程。赛题为在 CCU 引擎上实现 Scatter 算子，覆盖 2×8 / 4×3 / 4×1 / 8+4 多类拓扑与消息规模，共 12 个性能点。
 
-最终提交（A21）成绩（μs）：**11 / 965 / 757 / 12 / 2060 / 1610 / 11 / 925 / 726 / 13 / 1720 / 1350**。其中 23/24 两点与同屏 TBest 持平。
+本目录是赛后重构版，没有官方成绩。最终提交是 351048（M），源码在 [`../submitted/`](../submitted/)，成绩 11 / 965 / 757 / 12 / 2064 / 1615 / 11 / 925 / 726 / 13 / 1721 / 1347。A21 那一轮的账本是 11 / 965 / 757 / 12 / 2060 / 1610 / 11 / 925 / 726 / 13 / 1720 / 1350，两轮差在 23/24/29/30 四个点上，逐点记录见[历史账本](../docs/performance-journey.md)。
 
 ## 数据流总览
 
@@ -26,9 +26,11 @@
 
 root 必须向其余 15 个 rank 导出 15B 数据，出口容量为 7 条机内链 + 4 倍 Clos（共 11b）。理想时间下界 `15B/(11b)` 要求机内链也满载：7 个 helper 各代转 rB 时，Mesh 项 `(1+r)B/b` 与 Clos 项 `(8-7r)B/(4b)` 在 r=4/11 处相等——实测 20/21 点兑现 8.7%（模型预测 9.1%）。
 
-### 借输出前缀中转与依赖解耦
+### 旧版的中转：借输出前缀（A21）
 
-helper 把转发数据暂存在**接收者的输出前缀区**（借用而非独立 scratch）：root 先发 suffix（不依赖前缀），helper 转发完成后 root 再恢复被借用的前缀。A21 版本进一步把 restore 的发起从"全组 suffix 完成"提前到"逐 helper 转发完成"，suffix 写与 restore 重叠。
+A21 里 helper 把转发数据暂存在**接收者的输出前缀区**：root 先发 suffix（不依赖前缀），helper 转发完成后 root 再恢复被借用的前缀。A21 把 restore 的发起从"全组 suffix 完成"提前到"逐 helper 转发完成"，suffix 写与 restore 重叠。
+
+赛后版改的就是这一块：从 `HcclGetHcclBuffer` 取独立 scratch，helper 自己的数据写入和转发数据的生命周期分开，不再需要恢复写。代价是多占一份中转缓冲。
 
 ### 协议按消息大小切换
 
@@ -38,14 +40,14 @@ helper 把转发数据暂存在**接收者的输出前缀区**（借用而非独
 
 ## 版本演进与收益账本
 
-完整 23 个版本的机制与官测数据见 [docs/performance-journey.md](../docs/performance-journey.md)。核心结论：每档收益与机制本质匹配——
+完整 12 个有官方成绩的版本（另有 7 个在本地验证阶段失败、没有官测）的机制与数据见 [docs/performance-journey.md](../docs/performance-journey.md)。核心结论：每档收益与机制本质匹配——
 
 ```
 F1 双die并行   大消息 -30~50%   （结构）
 F8 发送提前    20/21 -22%      （消除过早等待）
 F11 七helper   20/21 -8.7%     （负载均衡，达流量模型平衡点）
 F15 复制迁移   29/30 -2%       （收尾归属）
-A21 等待重排   20/21 -0.4%     （链路满载后控制微调收益趋零）
+A21 等待重排   20/21 -0.4%     （控制微调，收益趋小；不能据此说链路已满载）
 ```
 
 ## 选手实现文件
@@ -53,6 +55,6 @@ A21 等待重排   20/21 -0.4%     （链路满载后控制微调收益趋零）
 - `include/custom.h` — 资源上下文、注册数据、缓存 Decode 校验
 - `op_host/scatter.cc` — Host 侧：链路选择（layer 感知）、拓扑识别（8/8 与 3/3/3/3）、kernel 注册（每 die 最多 2 mission）
 - `op_host/exec_op.{h,cc}` — Host 编排：拓扑/消息路由、分片循环、双线程下发与 join
-- `op_kernel_ccu/ccu_kernel.{h,cc}` — CCU 内核：普通 Push、SmallPull、ReadyPush、双模式、Relay（Mesh/Clos 两分支）
+- `op_kernel_ccu/ccu_kernel.{h,cc}` — CCU 内核：普通 Push、ReadyPush、双模式、Relay（Mesh/Clos 两分支）。同文件里的 `CcuSmallPullKernel` 有定义但从未注册，属于遗留代码
 
 其余文件为官方模板预制逻辑。构建方式见官方模板说明（`bash build.sh`）。
