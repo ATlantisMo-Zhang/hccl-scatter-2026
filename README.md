@@ -1,6 +1,6 @@
 # HCCL Scatter：A21 与赛后优化版
 
-2026 HCCL 通信库创新大赛东北赛区 Scatter 实现：初赛使用 AICPU + TS，决赛使用 CCU。决赛以 A21 为基线，最终提交是它的一个小变体 M（4×3 自拷贝提前）；赛后优化参考了跑分前三 yiran、Bueryy、cc 的公开源码，不以答辩名次为依据。
+2026 HCCL 通信库创新大赛东北赛区 Scatter 实现：初赛使用 AICPU + TS，决赛使用 CCU。决赛以 A21 为基线，最终提交是它的一个小变体 M（4×3 自拷贝提前）；赛后优化参考了跑分前三 yiran、Bueryy、cc 的公开源码。
 
 仓库里有三份决赛工程：`submitted/` 是平台最终提交（351048，代号 M）的原样 19 个文件，`baselines/a21/` 是提交前的 A21 快照，`final/` 是赛后重构代码。三份的 magic、cache tag 和中转比例都不一样，差异与哈希见[提交包身份](docs/submitted-identity.md)。
 
